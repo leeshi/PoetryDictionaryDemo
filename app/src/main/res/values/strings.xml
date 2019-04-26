@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PoetryDictionaryDemo</string>
+    <string name="empty_string"></string>
+    <string name="action_settings">Settings</string>
+</resources>
