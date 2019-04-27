@@ -10,17 +10,17 @@ import android.support.v7.widget.Toolbar;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
+import com.lishi.demo.poetrydictionarydemo.Fragment.RecyclerViewPoetryFragment;
+
 
 public class MainActivity extends AppCompatActivity {
     private MaterialViewPager mViewPager;
-    static final int TAPS = 3;
+    static final int TAPS = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
 
         mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
 
@@ -45,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
                         return HeaderDesign.fromColorResAndUrl(
                                 R.color.red,
                                 "http://www.tothemobile.com/wp-content/uploads/2014/07/original.jpg");
+                    case 4:
+                        return HeaderDesign.fromColorResAndUrl(
+                            R.color.lime,
+                            "http://www.tothemobile.com/wp-content/uploads/2014/07/original.jpg");
                 }
                 return null;
             }
@@ -70,12 +74,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public Fragment getItem(int position) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("ITEMS",position + 1);
+
                 switch (position % TAPS) {
                     case 0:
-                        return RecyclerViewFragment.newInstance();
-
+                        Fragment mFragment =  RecyclerViewPoetryFragment.newInstance();
+                        mFragment.setArguments(bundle);
+                        return mFragment;
                     default:
-                        return RecyclerViewFragment.newInstance();
+                        Fragment nFragment =  RecyclerViewPoetryFragment.newInstance();
+                        nFragment.setArguments(bundle);
+                        return nFragment;
                 }
             }
 
@@ -86,13 +96,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public CharSequence getPageTitle(int position) {
-                switch (position % TAPS) {
+                switch (position ){
                     case 0:
-                        return "TAP1";
-
-
+                        return "诗词";
+                    case 1:
+                        return "译文及注释";
+                    case 2:
+                        return "赏析";
                     default:
-                        return "TAPN";
+                        return "猜你喜欢";
                 }
             }
         });
