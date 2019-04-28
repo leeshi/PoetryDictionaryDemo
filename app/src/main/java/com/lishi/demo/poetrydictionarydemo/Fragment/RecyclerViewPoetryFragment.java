@@ -12,11 +12,12 @@ import android.view.ViewGroup;
 import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
 import com.lishi.demo.poetrydictionarydemo.Adapter.RecyclerViewPoetryPagerAdapter;
 import com.lishi.demo.poetrydictionarydemo.R;
+import com.lishi.demo.poetrydictionarydemo.View.DetailedPoetryView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewPoetryFragment extends Fragment {
+public class RecyclerViewPoetryFragment extends Fragment implements DetailedPoetryView {
     public static Fragment newInstance(){return  new RecyclerViewPoetryFragment();}
     final List<Object> items = new ArrayList<>();
     private RecyclerView.Adapter mViewPagerAdapter;
@@ -36,7 +37,6 @@ public class RecyclerViewPoetryFragment extends Fragment {
         int ITEMS = getArguments().getInt("ITEMS");
         for (int i=0;i<ITEMS;i++){
             items.add(new Object());
-
         }
 
         mViewPagerAdapter = new RecyclerViewPoetryPagerAdapter(items);
@@ -45,5 +45,35 @@ public class RecyclerViewPoetryFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new MaterialViewPagerHeaderDecorator());
         mRecyclerView.setAdapter(mViewPagerAdapter);
+    }
+
+    @Override
+    public void showFailedError() {
+
+    }
+
+    @Override
+    public void toPoetryFragment(Object object) {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void clearView() {
+
+    }
+
+    @Override
+    public void getMode() {
+
     }
 }
