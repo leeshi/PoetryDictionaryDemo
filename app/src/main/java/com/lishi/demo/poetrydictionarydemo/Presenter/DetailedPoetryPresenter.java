@@ -2,6 +2,6 @@ package com.lishi.demo.poetrydictionarydemo.Presenter;
 
 public interface DetatiledPoetryPresenter {
     void onResume();
-    void onDestory();
+    void onDestroy();
     void onItemClick(int position);
 }
