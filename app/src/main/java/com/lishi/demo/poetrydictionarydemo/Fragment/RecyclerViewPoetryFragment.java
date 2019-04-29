@@ -20,7 +20,7 @@ import java.util.List;
 public class RecyclerViewPoetryFragment extends Fragment implements DetailedPoetryView {
     public static Fragment newInstance(){return  new RecyclerViewPoetryFragment();}
     final List<Object> items = new ArrayList<>();
-    private RecyclerView.Adapter mViewPagerAdapter;
+    private RecyclerViewPoetryPagerAdapter mViewPagerAdapter;
     //static final int ITEMS = 6;
     //添加自定义数目
 
@@ -34,6 +34,7 @@ public class RecyclerViewPoetryFragment extends Fragment implements DetailedPoet
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerView=view.findViewById(R.id.recyclerView);
+        //通过外部传参来设置item数量，然后获取各个item的textview
         int ITEMS = getArguments().getInt("ITEMS");
         for (int i=0;i<ITEMS;i++){
             items.add(new Object());
@@ -49,17 +50,17 @@ public class RecyclerViewPoetryFragment extends Fragment implements DetailedPoet
 
     @Override
     public void showFailedError() {
-
+        //TODO
     }
 
     @Override
-    public void toPoetryFragment(Object object) {
-
+    public void toPoetryFragment(List listData) {
+        mViewPagerAdapter.update(listData);
     }
 
     @Override
     public void hideLoading() {
-
+        //TODO
     }
 
     @Override

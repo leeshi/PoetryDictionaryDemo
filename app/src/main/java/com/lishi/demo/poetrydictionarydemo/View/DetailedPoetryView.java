@@ -1,8 +1,10 @@
 package com.lishi.demo.poetrydictionarydemo.View;
 
+import java.util.List;
+
 public interface DetailedPoetryView {
     void showFailedError();
-    void toPoetryFragment(Object object);
+    void toPoetryFragment(List list);
     void hideLoading();
     void showLoading();
     void clearView();
