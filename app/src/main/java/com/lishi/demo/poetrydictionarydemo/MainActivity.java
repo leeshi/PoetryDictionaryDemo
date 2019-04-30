@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
+import com.lishi.demo.poetrydictionarydemo.Adapter.PoetryPagerAdapter;
 import com.lishi.demo.poetrydictionarydemo.Fragment.RecyclerViewPoetryFragment;
 import com.lishi.demo.poetrydictionarydemo.Model.DetailCrawlerImpl;
 import com.lishi.demo.poetrydictionarydemo.Presenter.DetailedPoetryPresenter;
@@ -87,71 +88,11 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
         }
 
-        ViewPager viewPager = mViewPager.getViewPager();
-        mViewPager.getViewPager().setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
-            private List<Fragment> fragmentList = new ArrayList<>();
-            private FragmentManager fragmentManager = getSupportFragmentManager();
+        PoetryPagerAdapter poetryPagerAdapter = new PoetryPagerAdapter(getSupportFragmentManager());
+        mViewPager.getViewPager().setAdapter(poetryPagerAdapter);
 
-            @Override
-            public Fragment getItem(int position) {
-                Bundle bundle = new Bundle();
-                //TODO 暂时设置所有页面只有一个Card
-                bundle.putInt("ITEMS",1);
-
-                switch (position % TAPS) {
-                    //进行强制类型转换
-                    case 0:
-                        Fragment mFragment =  RecyclerViewPoetryFragment.newInstance();
-                        mFragment.setArguments(bundle);
-                        listFragmentView.add((DetailedPoetryView) mFragment);
-                        fragmentList.add(mFragment);
-                        return mFragment;
-                    default:
-                        Fragment nFragment =  RecyclerViewPoetryFragment.newInstance();
-                        nFragment.setArguments(bundle);
-                        listFragmentView.add((DetailedPoetryView) nFragment);
-                        fragmentList.add(nFragment);
-                        return nFragment;
-                }
-            }
-
-            @Override
-            public int getCount() {
-                return TAPS;
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                switch (position ){
-                    case 0:
-                        return "诗词";
-                    case 1:
-                        return "译文及注释";
-                    case 2:
-                        return "赏析";
-                    case 3:
-                        return "背景故事";
-                        default:
-                            return "猜你喜欢";
-
-                }
-            }
-
-            @Override
-            public Object instantiateItem(ViewGroup container, int position) {
-                Fragment fragment = (Fragment) super.instantiateItem(container, position);
-                fragmentManager.beginTransaction().show(fragment).commit();
-                return fragment;
-            }
-            @Override
-            public void destroyItem(ViewGroup container, int position, Object object) {
-                Fragment fragment = fragmentList.get(position);
-                fragmentManager.beginTransaction().hide(fragment).commit();
-            }
-
-        });
         mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
-        myPresenter = new DetailedPoetryPresenterImpl(listFragmentView,new DetailCrawlerImpl());
+        myPresenter = new DetailedPoetryPresenterImpl(poetryPagerAdapter.getFragmentViewList(),new DetailCrawlerImpl());
         myPresenter.onCreate("a5b8eb647c8f");
     }
 
