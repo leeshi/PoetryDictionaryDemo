@@ -18,8 +18,10 @@ public class DetailCrawlerImpl implements Crawler {
         //新建一个线程
         new Thread(() -> {
             String url = "https://so.gushiwen.org/shiwenv_"+ serial + ".aspx";
+            System.out.println(url);
+            Log.d("Crawler","访问 "+url);
             try {
-                Document doc = Jsoup.connect(url).header("", "").get();
+                Document doc = Jsoup.connect(url).header("User-Agent", "chrome").get();
                 //古诗文内容
                 String contson = doc.getElementsByAttributeValue("class", "contson").get(0).text();
                 //获取题目
@@ -79,7 +81,7 @@ public class DetailCrawlerImpl implements Crawler {
                 Log.d("DetailCrawlerImpl", "successfully fetch poetry data");
 
                 //必须注意，这里的list包含了所有信息
-                List<String> listData = new ArrayList<>(Arrays.asList(new String[] {title, poet, time, contson, fanyiSB.toString(),
+                List<String> listData = new ArrayList<>(Arrays.asList(new String[] {title + "\n" + time + ":" + poet + "\n" + contson, fanyiSB.toString(),
                         shangxiSB.toString(), backGround}));
                 onLoadListener.loadSuccess(listData);
 

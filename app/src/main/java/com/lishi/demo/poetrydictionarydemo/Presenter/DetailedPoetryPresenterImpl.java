@@ -6,6 +6,7 @@ import com.lishi.demo.poetrydictionarydemo.Model.Crawler;
 import com.lishi.demo.poetrydictionarydemo.Model.OnLoadListener;
 import com.lishi.demo.poetrydictionarydemo.View.DetailedPoetryView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -22,7 +23,8 @@ public class DetailedPoetryPresenterImpl implements DetailedPoetryPresenter {
         this.DetailCrawler = DetailCrawler;
     }
 
-    public void getDetail(String serial){
+    @Override
+    public void onCreate(String serial){
         //TODO 显示正在加载
         DetailCrawler.search(serial, new OnLoadListener() {
             @Override
@@ -46,27 +48,22 @@ public class DetailedPoetryPresenterImpl implements DetailedPoetryPresenter {
                     switch (i){
                         case 0:
                             mHandler.post(()-> {
-                                    listAllFragmentView.get(0).toPoetryFragment(list.subList(0, 3));
+                                    listAllFragmentView.get(0).toPoetryFragment(list.subList(0,1));
                             });
                             continue;
                         case 1:
                             mHandler.post(()-> {
-                                listAllFragmentView.get(1).toPoetryFragment(list.subList(4, 4));
+                                listAllFragmentView.get(1).toPoetryFragment(list.subList(4, 5));
                             });
                             continue;
                         case 2:
                             mHandler.post(()-> {
-                                listAllFragmentView.get(2).toPoetryFragment(list.subList(5, 5));
+                                listAllFragmentView.get(2).toPoetryFragment((list.subList(5, 6)));
                             });
                             continue;
                         case 3:
                             mHandler.post(()-> {
-                                listAllFragmentView.get(3).toPoetryFragment(list.subList(6, 6));
-                            });
-                            continue;
-                        case 4:
-                            mHandler.post(()-> {
-                                listAllFragmentView.get(4).toPoetryFragment(list.subList(7, 7));
+                                listAllFragmentView.get(3).toPoetryFragment(list.subList(6, 7));
                             });
                             continue;
                             //....more

@@ -11,11 +11,25 @@ import android.support.v7.widget.Toolbar;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
 import com.lishi.demo.poetrydictionarydemo.Fragment.RecyclerViewPoetryFragment;
+import com.lishi.demo.poetrydictionarydemo.Model.DetailCrawlerImpl;
+import com.lishi.demo.poetrydictionarydemo.Presenter.DetailedPoetryPresenter;
+import com.lishi.demo.poetrydictionarydemo.Presenter.DetailedPoetryPresenterImpl;
+import com.lishi.demo.poetrydictionarydemo.View.DetailedPoetryView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
     private MaterialViewPager mViewPager;
-    static final int TAPS = 4;
+    List<DetailedPoetryView> listFragmentView = new ArrayList<>();
+    Map<Integer,Integer> mapCardPerPage = new HashMap<>();
+    static final int TAPS = 5;
+    //Presenter
+    DetailedPoetryPresenter myPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
+
+        mapCardPerPage.put(0,1);
 
         //添加监听
         mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
@@ -75,16 +91,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public Fragment getItem(int position) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("ITEMS",position + 1);
+                //TODO 暂时设置所有页面只有一个Card
+                bundle.putInt("ITEMS",1);
 
                 switch (position % TAPS) {
+                    //进行强制类型转换
                     case 0:
                         Fragment mFragment =  RecyclerViewPoetryFragment.newInstance();
                         mFragment.setArguments(bundle);
+                        listFragmentView.add((DetailedPoetryView) mFragment);
                         return mFragment;
                     default:
                         Fragment nFragment =  RecyclerViewPoetryFragment.newInstance();
                         nFragment.setArguments(bundle);
+                        listFragmentView.add((DetailedPoetryView) nFragment);
                         return nFragment;
                 }
             }
@@ -103,12 +123,17 @@ public class MainActivity extends AppCompatActivity {
                         return "译文及注释";
                     case 2:
                         return "赏析";
-                    default:
-                        return "猜你喜欢";
+                    case 3:
+                        return "背景故事";
+                        default:
+                            return "猜你喜欢";
+
                 }
             }
         });
         mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
+        myPresenter = new DetailedPoetryPresenterImpl(listFragmentView,new DetailCrawlerImpl());
+        myPresenter.onCreate("133651c26320");
     }
 
 }
