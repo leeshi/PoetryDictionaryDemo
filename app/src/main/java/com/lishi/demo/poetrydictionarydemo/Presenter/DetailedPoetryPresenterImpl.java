@@ -53,17 +53,17 @@ public class DetailedPoetryPresenterImpl implements DetailedPoetryPresenter {
                             continue;
                         case 1:
                             mHandler.post(()-> {
-                                listAllFragmentView.get(1).toPoetryFragment(list.subList(4, 5));
+                                listAllFragmentView.get(1).toPoetryFragment(list.subList(1, 2));
                             });
                             continue;
                         case 2:
                             mHandler.post(()-> {
-                                listAllFragmentView.get(2).toPoetryFragment((list.subList(5, 6)));
+                                listAllFragmentView.get(2).toPoetryFragment((list.subList(2, 3)));
                             });
                             continue;
                         case 3:
                             mHandler.post(()-> {
-                                listAllFragmentView.get(3).toPoetryFragment(list.subList(6, 7));
+                                listAllFragmentView.get(3).toPoetryFragment(list.subList(3, 4));
                             });
                             continue;
                             //....more

@@ -25,6 +25,11 @@ public class RecyclerViewPoetryFragment extends Fragment implements DetailedPoet
     //添加自定义数目
 
     RecyclerView mRecyclerView;
+
+    @Override
+    public void onStop(){
+        super.onStop();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_recyclerview, container, false);

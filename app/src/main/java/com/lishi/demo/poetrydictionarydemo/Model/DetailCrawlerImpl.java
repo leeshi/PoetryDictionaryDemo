@@ -25,7 +25,9 @@ public class DetailCrawlerImpl implements Crawler {
                 //古诗文内容
                 String contson = doc.getElementsByAttributeValue("class", "contson").get(0).text();
                 //获取题目
-                String title = doc.getElementsByAttribute("h1").get(0).text();
+
+                String title = "测试";
+                //String title = doc.getElementsByAttribute("h1").get(0).text();
                 //获取朝代与作者
                 Element source = doc.getElementsByAttributeValue("class", "source").get(0);
                 String time = source.getAllElements().get(0).text();
