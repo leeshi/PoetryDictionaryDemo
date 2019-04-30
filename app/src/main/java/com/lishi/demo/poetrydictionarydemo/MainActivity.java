@@ -2,11 +2,13 @@ package com.lishi.demo.poetrydictionarydemo;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ViewGroup;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
@@ -87,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
         ViewPager viewPager = mViewPager.getViewPager();
         mViewPager.getViewPager().setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+            private List<Fragment> fragmentList = new ArrayList<>();
+            private FragmentManager fragmentManager = getSupportFragmentManager();
 
             @Override
             public Fragment getItem(int position) {
@@ -100,11 +104,13 @@ public class MainActivity extends AppCompatActivity {
                         Fragment mFragment =  RecyclerViewPoetryFragment.newInstance();
                         mFragment.setArguments(bundle);
                         listFragmentView.add((DetailedPoetryView) mFragment);
+                        fragmentList.add(mFragment);
                         return mFragment;
                     default:
                         Fragment nFragment =  RecyclerViewPoetryFragment.newInstance();
                         nFragment.setArguments(bundle);
                         listFragmentView.add((DetailedPoetryView) nFragment);
+                        fragmentList.add(nFragment);
                         return nFragment;
                 }
             }
@@ -130,10 +136,23 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             }
+
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                Fragment fragment = (Fragment) super.instantiateItem(container, position);
+                fragmentManager.beginTransaction().show(fragment).commit();
+                return fragment;
+            }
+            @Override
+            public void destroyItem(ViewGroup container, int position, Object object) {
+                Fragment fragment = fragmentList.get(position);
+                fragmentManager.beginTransaction().hide(fragment).commit();
+            }
+
         });
         mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
         myPresenter = new DetailedPoetryPresenterImpl(listFragmentView,new DetailCrawlerImpl());
-        myPresenter.onCreate("133651c26320");
+        myPresenter.onCreate("a5b8eb647c8f");
     }
 
 }
