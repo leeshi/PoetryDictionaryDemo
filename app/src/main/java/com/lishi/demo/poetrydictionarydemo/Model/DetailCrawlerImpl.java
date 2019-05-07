@@ -73,10 +73,13 @@ public class DetailCrawlerImpl implements Crawler {
                     } else if (!number.isEmpty() && id.contains("shangxi") && !id.contains("quan")) {
 
                         String newUrl = baseUrl + mode + ".aspx?id=" + number;
-                        Document shangxiDoc = Jsoup.connect(newUrl).header("User-Agent", "chrome").referrer(url).get();
+                        Document shangxiDoc = Jsoup.connect(newUrl).header("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36")
+                                .header("referer",url).get();
                         System.out.println(newUrl);
-                        String shangxiItem = shangxiDoc.getElementsByAttributeValue("class", "contyishang").get(0).text();
-                        shangxiSB.append(shangxiItem);
+                        Element shangxiElement = shangxiDoc.getElementsByClass("contyishang").get(0);
+                        for(Element p:shangxiElement.getElementsByTag("p")){
+                            shangxiSB.append(p.text() + '\n');
+                        }
                     }
                 }
 

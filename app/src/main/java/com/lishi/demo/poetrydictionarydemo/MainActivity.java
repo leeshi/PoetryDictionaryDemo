@@ -1,19 +1,13 @@
 package com.lishi.demo.poetrydictionarydemo;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.ViewGroup;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
 import com.lishi.demo.poetrydictionarydemo.Adapter.PoetryPagerAdapter;
-import com.lishi.demo.poetrydictionarydemo.Fragment.RecyclerViewPoetryFragment;
 import com.lishi.demo.poetrydictionarydemo.Model.DetailCrawlerImpl;
 import com.lishi.demo.poetrydictionarydemo.Presenter.DetailedPoetryPresenter;
 import com.lishi.demo.poetrydictionarydemo.Presenter.DetailedPoetryPresenterImpl;
@@ -27,7 +21,6 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private MaterialViewPager mViewPager;
-    List<DetailedPoetryView> listFragmentView = new ArrayList<>();
     Map<Integer,Integer> mapCardPerPage = new HashMap<>();
     static final int TAPS = 5;
     //Presenter
@@ -91,9 +84,12 @@ public class MainActivity extends AppCompatActivity {
         PoetryPagerAdapter poetryPagerAdapter = new PoetryPagerAdapter(getSupportFragmentManager());
         mViewPager.getViewPager().setAdapter(poetryPagerAdapter);
 
+        //默认加载所有Fragment，以便Presenter更新数据
+        mViewPager.getViewPager().setOffscreenPageLimit(5);
+
         mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
         myPresenter = new DetailedPoetryPresenterImpl(poetryPagerAdapter.getFragmentViewList(),new DetailCrawlerImpl());
-        myPresenter.onCreate("a5b8eb647c8f");
+        myPresenter.onCreate("ed3504a25e60");
     }
 
 }
