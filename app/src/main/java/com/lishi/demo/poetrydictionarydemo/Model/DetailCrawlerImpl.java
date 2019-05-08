@@ -22,6 +22,8 @@ public class DetailCrawlerImpl implements Crawler {
             Log.d("Crawler","访问 "+url);
             try {
                 Document doc = Jsoup.connect(url).header("User-Agent", "chrome").get();
+                //sons列表
+                Elements sons = doc.getElementsByClass("sons");
                 //古诗文内容
                 String contson = doc.getElementsByAttributeValue("class", "contson").get(0).text();
                 //获取题目
@@ -68,8 +70,11 @@ public class DetailCrawlerImpl implements Crawler {
                         //添加索引，不然会被封
                         Document fanyiDoc = Jsoup.connect(newUrl).header("User-Agent", "chrome").referrer(url).cookie("ASP.NET_SessionId", "bqodoezoibimiwe4arvepsip").get();
                         System.out.println(newUrl);
-                        String fanyiItem = fanyiDoc.getElementsByAttributeValue("class", "contyishang").get(0).text();
-                        fanyiSB.append(fanyiItem);
+                        //逐个抓取标签p的文字
+                        Element fanyiItem = fanyiDoc.getElementsByAttributeValue("class", "contyishang").get(0);
+                        for(Element p:fanyiItem.getElementsByTag("p")){
+                            fanyiSB.append(p.text() + '\n');
+                        }
                     } else if (!number.isEmpty() && id.contains("shangxi") && !id.contains("quan")) {
 
                         String newUrl = baseUrl + mode + ".aspx?id=" + number;
@@ -86,8 +91,12 @@ public class DetailCrawlerImpl implements Crawler {
                 Log.d("DetailCrawlerImpl", "successfully fetch poetry data");
 
                 //必须注意，这里的list包含了所有信息
-                List<String> listData = new ArrayList<>(Arrays.asList(new String[] {title + "\n" + time + ":" + poet + "\n" + contson, fanyiSB.toString(),
-                        shangxiSB.toString(), backGround}));
+                //包括推荐
+                List<String> listPoetry = getRecommendation(sons);
+
+                List<String> listData = Arrays.asList(new String[] {title + "\n" + time + ":" + poet + "\n" + contson, fanyiSB.toString(),
+                        shangxiSB.toString(), backGround});
+                listData.addAll(listPoetry);
                 onLoadListener.loadSuccess(listData);
 
             } catch (IOException e) {
@@ -98,5 +107,38 @@ public class DetailCrawlerImpl implements Crawler {
                 onLoadListener.onFinish();
             }
         }).start();
+    }
+
+    /*
+     * 搜索所有的推荐诗词
+     * @return List<String>
+     * @param Elements
+     */
+    private List<String> getRecommendation(Elements sons){
+        List<String> listPoetry = new ArrayList<>();
+
+        //后三个sons element是推荐的诗词内容
+        int size = sons.size();
+        //用循环获取元素
+        for(int i = size - 1;i > size - 4;i--){
+            Element element = sons.get(i);
+            //诗词的主题，包含内容和id
+            Element contson = element.getElementsByClass("contson").get(0);
+            //获取serial
+            String serial = contson.id().replace("contson","");
+            String content = contson.text();
+
+            //第一个p元素是题目
+            String title = element.getElementsByTag("p").get(0).text();
+
+            String source = element.getElementsByClass("source").get(0).text();
+
+            listPoetry.add(title);
+            listPoetry.add(source);
+            listPoetry.add(content);
+            listPoetry.add(serial);
+        }
+
+        return listPoetry;
     }
 }

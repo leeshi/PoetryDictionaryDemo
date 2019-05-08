@@ -17,7 +17,7 @@ public class PoetryPagerAdapter extends FragmentPagerAdapter {
     private FragmentManager fragmentManager;
     private List<DetailedPoetryView> detailedPoetryViewList = new ArrayList<>();
 
-    private final int TAPS = 4;
+    private final int TAPS = 5;
 
 
     public PoetryPagerAdapter(FragmentManager fragmentManager){
@@ -49,14 +49,15 @@ public class PoetryPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return "诗词";
             case 1:
-                return "译文及注释";
+                return "注释";
             case 2:
                 return "赏析";
             case 3:
-                return "背景故事";
-            default:
-                return "猜你喜欢";
-
+                return "背景";
+            case 4:
+                return "推荐";
+                default:
+                    return null;
         }
     }
 
