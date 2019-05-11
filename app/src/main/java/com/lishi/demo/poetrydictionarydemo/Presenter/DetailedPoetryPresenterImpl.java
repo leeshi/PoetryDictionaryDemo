@@ -67,6 +67,12 @@ public class DetailedPoetryPresenterImpl implements DetailedPoetryPresenter {
                                 listAllFragmentView.get(3).toPoetryFragment(listData.subList(3, 4));
                             });
                             continue;
+                        case 4:
+                            mHandler.post(()->{
+                                //一共三个推荐
+                                listAllFragmentView.get(3).toPoetryFragment(listData.subList(4,7));
+                            });
+                            continue;
                             //....more
                     }
                 }

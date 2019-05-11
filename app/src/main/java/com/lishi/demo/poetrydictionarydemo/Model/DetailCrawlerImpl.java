@@ -113,6 +113,7 @@ public class DetailCrawlerImpl implements Crawler {
      * 搜索所有的推荐诗词
      * @return List<String>
      * @param Elements
+     * 按照title,source,content,serial的顺序排列
      */
     private List<String> getRecommendation(Elements sons){
         List<String> listPoetry = new ArrayList<>();
@@ -133,10 +134,10 @@ public class DetailCrawlerImpl implements Crawler {
 
             String source = element.getElementsByClass("source").get(0).text();
 
-            listPoetry.add(title);
-            listPoetry.add(source);
-            listPoetry.add(content);
-            listPoetry.add(serial);
+            listPoetry.add(title + '\n' + source + '\n' + content);
+            //TODO 使用串号需要新建对象,暂时没有想到使用对象同时又便于复用Fragment的方法
+            //TODO 可以使用新的Fragment
+            //listPoetry.add(serial);
         }
 
         return listPoetry;

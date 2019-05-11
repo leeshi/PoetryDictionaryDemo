@@ -28,8 +28,16 @@ public class PoetryPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Bundle bundle = new Bundle();
-        //TODO 暂时设置所有页面只有一个Card
-        bundle.putInt("ITEMS",1);
+        //修改此处控制card数量
+        switch(position){
+            case 4://推荐
+                bundle.putInt("ITEMS",3);
+                break;
+            default:
+                bundle.putInt("ITEMS",1);
+                break;
+
+        }
 
         Fragment mFragment =  RecyclerViewPoetryFragment.newInstance();
         mFragment.setArguments(bundle);
