@@ -58,9 +58,9 @@ public class RecyclerViewPoetryPagerAdapter extends RecyclerView.Adapter<Recycle
      *        List<String>
      * @return void
      */
-    public void update(List<String> data){
+    public void update(List<Object> data){
         for(int i = 0;i < data.size();i++){
-            listTextView.get(i).setText(data.get(i));
+            listTextView.get(i).setText(data.get(i).toString());
         }
     }
 

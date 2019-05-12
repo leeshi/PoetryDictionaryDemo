@@ -21,8 +21,6 @@ public class RecyclerViewPoetryFragment extends Fragment implements DetailedPoet
     public static Fragment newInstance(){return  new RecyclerViewPoetryFragment();}
     final List<Object> items = new ArrayList<>();
     private RecyclerViewPoetryPagerAdapter mViewPagerAdapter;
-    //static final int ITEMS = 6;
-    //添加自定义数目
 
     RecyclerView mRecyclerView;
 
@@ -59,7 +57,7 @@ public class RecyclerViewPoetryFragment extends Fragment implements DetailedPoet
     }
 
     @Override
-    public void toPoetryFragment(List listData) {
+    public void toPoetryFragment(List<Object> listData) {
         mViewPagerAdapter.update(listData);
     }
 

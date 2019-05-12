@@ -51,28 +51,23 @@ public class DetailedPoetryPresenterImpl implements DetailedPoetryPresenter {
                         //TODO 修改这里的列表长度以适应每一个Fragment
                         case 0:
                             mHandler.post(()-> {
-                                    listAllFragmentView.get(0).toPoetryFragment(listData.subList(0,1));
+                                    listAllFragmentView.get(0).toPoetryFragment(listData.subList(0,2));
                             });
                             continue;
                         case 1:
                             mHandler.post(()-> {
-                                listAllFragmentView.get(1).toPoetryFragment(listData.subList(1, 2));
+                                listAllFragmentView.get(1).toPoetryFragment(listData.subList(2, 3));
                             });
                             continue;
                         case 2:
                             mHandler.post(()-> {
-                                listAllFragmentView.get(2).toPoetryFragment((listData.subList(2, 3)));
+                                listAllFragmentView.get(2).toPoetryFragment((listData.subList(3, 4)));
                             });
                             continue;
                         case 3:
-                            mHandler.post(()-> {
-                                listAllFragmentView.get(3).toPoetryFragment(listData.subList(3, 4));
-                            });
-                            continue;
-                        case 4:
                             mHandler.post(()->{
                                 //一共三个推荐
-                                listAllFragmentView.get(4).toPoetryFragment(listData.subList(4,7));
+                                listAllFragmentView.get(3).toPoetryFragment(listData.subList(4,7));
                             });
                             continue;
                             //....more

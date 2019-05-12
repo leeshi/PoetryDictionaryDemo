@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface DetailedPoetryView {
     void showFailedError();
-    void toPoetryFragment(List list);
+    void toPoetryFragment(List<Object> list);
     void hideLoading();
     void showLoading();
     void clearView();

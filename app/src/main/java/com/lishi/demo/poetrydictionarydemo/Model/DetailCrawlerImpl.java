@@ -2,6 +2,8 @@ package com.lishi.demo.poetrydictionarydemo.Model;
 
 import android.util.Log;
 
+import com.lishi.demo.poetrydictionarydemo.item.PoetryItem;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -25,15 +27,14 @@ public class DetailCrawlerImpl implements Crawler {
                 //sons列表
                 Elements sons = doc.getElementsByClass("sons");
                 //古诗文内容
-                String contson = doc.getElementsByAttributeValue("class", "contson").get(0).text();
+                String content = doc.getElementsByAttributeValue("class", "contson").get(0).text();
                 //获取题目
 
                 String title = doc.getElementsByTag("h1").get(0).text();
                 //String title = doc.getElementsByAttribute("h1").get(0).text();
                 //获取朝代与作者
-                Element source = doc.getElementsByAttributeValue("class", "source").get(0);
-                String time = source.getAllElements().get(0).text();
-                String poet = source.getAllElements().get(1).text();
+                Element sourceElement = doc.getElementsByAttributeValue("class", "source").get(0);
+                String source = sourceElement.getAllElements().get(0).text();
 
                 //获取注释和赏析，逻辑比较复杂
                 //有时候，翻译会有两个部分，需要加以区分
@@ -92,13 +93,18 @@ public class DetailCrawlerImpl implements Crawler {
 
                 //必须注意，这里的list包含了所有信息
                 //包括推荐
-                List<String> listPoetry = getRecommendation(sons);
+                List<PoetryItem> listPoetry = getRecommendation(sons);
 
-                List<String> listData = new ArrayList<>();
-                listData.add(title + "\n" + time + "\n" + contson);
+                List<Object> listData = new ArrayList<>();
+
+                //当前的诗词单项
+                PoetryItem currentPoetry = new PoetryItem(title,source,content,"");
+
+                listData.add(currentPoetry);
+                listData.add(backGround);
+                //背景与诗词显示在同一个卡片内
                 listData.add(fanyiSB.toString());
                 listData.add(shangxiSB.toString());
-                listData.add(backGround);
                 listData.addAll(listPoetry);
                 onLoadListener.loadSuccess(listData);
 
@@ -118,8 +124,8 @@ public class DetailCrawlerImpl implements Crawler {
      * @param Elements
      * 按照title,source,content,serial的顺序排列
      */
-    private List<String> getRecommendation(Elements sons){
-        List<String> listPoetry = new ArrayList<>();
+    private List<PoetryItem> getRecommendation(Elements sons){
+        List<PoetryItem> listPoetry = new ArrayList<>();
 
         //后三个sons element是推荐的诗词内容
         int size = sons.size();
@@ -130,17 +136,17 @@ public class DetailCrawlerImpl implements Crawler {
             Element contson = element.getElementsByAttributeValue("class","contson").get(0);
             //获取serial
             String serial = contson.id().replace("contson","");
-            String content = contson.ownText();
+            String content = contson.text();
 
             //第一个p元素是题目
             String title = element.getElementsByTag("p").get(0).text();
 
             String source = element.getElementsByAttributeValue("class","source").get(0).text();
 
-            listPoetry.add(title + '\n' + source + '\n' + content);
+            PoetryItem poetryItem = new PoetryItem(title,source,content,serial);
             //TODO 使用串号需要新建对象,暂时没有想到使用对象同时又便于复用Fragment的方法
             //TODO 可以使用新的Fragment
-            //listPoetry.add(serial);
+            listPoetry.add(poetryItem);
         }
 
         return listPoetry;

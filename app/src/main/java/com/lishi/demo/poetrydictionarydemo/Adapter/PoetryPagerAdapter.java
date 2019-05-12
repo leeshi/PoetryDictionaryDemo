@@ -17,7 +17,7 @@ public class PoetryPagerAdapter extends FragmentPagerAdapter {
     private FragmentManager fragmentManager;
     private List<DetailedPoetryView> detailedPoetryViewList = new ArrayList<>();
 
-    private final int TAPS = 5;
+    private final int TAPS = 4;
 
 
     public PoetryPagerAdapter(FragmentManager fragmentManager){
@@ -30,7 +30,10 @@ public class PoetryPagerAdapter extends FragmentPagerAdapter {
         Bundle bundle = new Bundle();
         //修改此处控制card数量
         switch(position){
-            case 4://推荐
+            case 0:
+                bundle.putInt("ITEMS",2);
+                break;
+            case 3://推荐
                 bundle.putInt("ITEMS",3);
                 break;
             default:
@@ -61,8 +64,6 @@ public class PoetryPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return "赏析";
             case 3:
-                return "背景";
-            case 4:
                 return "推荐";
                 default:
                     return null;
