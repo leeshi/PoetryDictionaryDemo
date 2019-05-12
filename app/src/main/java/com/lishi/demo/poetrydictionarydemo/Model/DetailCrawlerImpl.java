@@ -28,7 +28,7 @@ public class DetailCrawlerImpl implements Crawler {
                 String contson = doc.getElementsByAttributeValue("class", "contson").get(0).text();
                 //获取题目
 
-                String title = "测试";
+                String title = doc.getElementsByTag("h1").get(0).text();
                 //String title = doc.getElementsByAttribute("h1").get(0).text();
                 //获取朝代与作者
                 Element source = doc.getElementsByAttributeValue("class", "source").get(0);
@@ -46,13 +46,13 @@ public class DetailCrawlerImpl implements Crawler {
                 String baseUrl = "https://so.gushiwen.org/shiwen2017/ajax";
                 for (Element element : sonElements) {
                     if (element.getElementsByTag("h2").text().contains("背景")) {
-                        backGround = element.getElementsByAttributeValue("class", "contyishang").text();
+                        backGround = element.getElementsByAttributeValue("class", "contyishang").get(0).text();
                         continue;
                     } else if (element.getElementsByTag("h2").text().contains("译文") && !element.text().contains("展开")) {//提取不需要展开的信息
-                        fanyiSB.append(element.getElementsByAttributeValue("class", "contyishang").text());
+                        fanyiSB.append(element.getElementsByAttributeValue("class", "contyishang").get(0).text());
                         continue;
                     } else if (element.getElementsByTag("h2").text().contains("赏析") && !element.text().contains("展开")) {//提取不需要展开的信息
-                        shangxiSB.append(element.getElementsByAttributeValue("class", "contyishang").text());
+                        shangxiSB.append(element.getElementsByAttributeValue("class", "contyishang").get(0).text());
                         continue;
                     }
 
@@ -94,8 +94,11 @@ public class DetailCrawlerImpl implements Crawler {
                 //包括推荐
                 List<String> listPoetry = getRecommendation(sons);
 
-                List<String> listData = Arrays.asList(new String[] {title + "\n" + time + ":" + poet + "\n" + contson, fanyiSB.toString(),
-                        shangxiSB.toString(), backGround});
+                List<String> listData = new ArrayList<>();
+                listData.add(title + "\n" + time + "\n" + contson);
+                listData.add(fanyiSB.toString());
+                listData.add(shangxiSB.toString());
+                listData.add(backGround);
                 listData.addAll(listPoetry);
                 onLoadListener.loadSuccess(listData);
 
@@ -124,15 +127,15 @@ public class DetailCrawlerImpl implements Crawler {
         for(int i = size - 1;i > size - 4;i--){
             Element element = sons.get(i);
             //诗词的主题，包含内容和id
-            Element contson = element.getElementsByClass("contson").get(0);
+            Element contson = element.getElementsByAttributeValue("class","contson").get(0);
             //获取serial
             String serial = contson.id().replace("contson","");
-            String content = contson.text();
+            String content = contson.ownText();
 
             //第一个p元素是题目
             String title = element.getElementsByTag("p").get(0).text();
 
-            String source = element.getElementsByClass("source").get(0).text();
+            String source = element.getElementsByAttributeValue("class","source").get(0).text();
 
             listPoetry.add(title + '\n' + source + '\n' + content);
             //TODO 使用串号需要新建对象,暂时没有想到使用对象同时又便于复用Fragment的方法

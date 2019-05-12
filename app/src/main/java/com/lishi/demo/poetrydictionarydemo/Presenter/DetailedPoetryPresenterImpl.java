@@ -44,6 +44,8 @@ public class DetailedPoetryPresenterImpl implements DetailedPoetryPresenter {
              */
             @Override
             public void loadSuccess(List listData) {
+
+
                 for(int i = 0;i < listAllFragmentView.size();i++){
                     switch (i){
                         //TODO 修改这里的列表长度以适应每一个Fragment
@@ -70,7 +72,7 @@ public class DetailedPoetryPresenterImpl implements DetailedPoetryPresenter {
                         case 4:
                             mHandler.post(()->{
                                 //一共三个推荐
-                                listAllFragmentView.get(3).toPoetryFragment(listData.subList(4,7));
+                                listAllFragmentView.get(4).toPoetryFragment(listData.subList(4,7));
                             });
                             continue;
                             //....more
