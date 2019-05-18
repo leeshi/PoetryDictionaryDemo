@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
@@ -11,15 +12,15 @@ import com.lishi.demo.poetrydictionarydemo.Adapter.PoetryPagerAdapter;
 import com.lishi.demo.poetrydictionarydemo.Model.DetailCrawlerImpl;
 import com.lishi.demo.poetrydictionarydemo.Presenter.DetailedPoetryPresenter;
 import com.lishi.demo.poetrydictionarydemo.Presenter.DetailedPoetryPresenterImpl;
-import com.lishi.demo.poetrydictionarydemo.View.DetailedPoetryView;
+import com.lishi.demo.poetrydictionarydemo.View.MainPageView;
+import com.lishi.demo.poetrydictionarydemo.item.PoetryItem;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainPageView {
     private MaterialViewPager mViewPager;
     Map<Integer,Integer> mapCardPerPage = new HashMap<>();
     static final int TAPS = 5;
@@ -69,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         //添加toolbar
         Toolbar toolbar = mViewPager.getToolbar();
 
-
         if (toolbar != null) {
             setSupportActionBar(toolbar);
 
@@ -83,13 +83,21 @@ public class MainActivity extends AppCompatActivity {
 
         PoetryPagerAdapter poetryPagerAdapter = new PoetryPagerAdapter(getSupportFragmentManager());
         mViewPager.getViewPager().setAdapter(poetryPagerAdapter);
-
+        //更新主标题
         //默认加载所有Fragment，以便Presenter更新数据
         mViewPager.getViewPager().setOffscreenPageLimit(5);
 
         mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
-        myPresenter = new DetailedPoetryPresenterImpl(poetryPagerAdapter.getFragmentViewList(),new DetailCrawlerImpl());
+        myPresenter = new DetailedPoetryPresenterImpl(this,poetryPagerAdapter.getFragmentViewList(),new DetailCrawlerImpl());
         myPresenter.onCreate("ed3504a25e60");
     }
 
+    /*
+    先将数据传送给MainActivity，进行页面加载动画显示，再去更新Fragment
+     */
+    @Override
+    public void toMainActivity(String mainTitle) {
+        TextView logo = mViewPager.findViewById(R.id.logo_white);
+        logo.setText(mainTitle);
+    }
 }

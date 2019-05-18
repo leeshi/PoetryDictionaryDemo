@@ -27,8 +27,9 @@ public class DetailCrawlerImpl implements Crawler {
                 //sons列表
                 Elements sons = doc.getElementsByClass("sons");
                 //古诗文内容
-                String content = doc.getElementsByAttributeValue("class", "contson").get(0).text();
+                Element contson = doc.getElementsByAttributeValue("class", "contson").get(0);
                 //获取题目
+                String AfterRe = contson.html().replaceAll("<br>","").replaceAll("</?[^>]+>","").replaceAll("\\(.*?\\)","");
 
                 String title = doc.getElementsByTag("h1").get(0).text();
                 //String title = doc.getElementsByAttribute("h1").get(0).text();
@@ -98,7 +99,7 @@ public class DetailCrawlerImpl implements Crawler {
                 List<Object> listData = new ArrayList<>();
 
                 //当前的诗词单项
-                PoetryItem currentPoetry = new PoetryItem(title,source,content,"");
+                PoetryItem currentPoetry = new PoetryItem(title,source,AfterRe,serial);
 
                 listData.add(currentPoetry);
                 listData.add(backGround);
@@ -136,14 +137,13 @@ public class DetailCrawlerImpl implements Crawler {
             Element contson = element.getElementsByAttributeValue("class","contson").get(0);
             //获取serial
             String serial = contson.id().replace("contson","");
-            String content = contson.text();
-
+            String AfterRe = contson.html().replaceAll("<br>","").replaceAll("</?[^>]+>","").replaceAll("\\(.*?\\)","");
             //第一个p元素是题目
             String title = element.getElementsByTag("p").get(0).text();
 
             String source = element.getElementsByAttributeValue("class","source").get(0).text();
 
-            PoetryItem poetryItem = new PoetryItem(title,source,content,serial);
+            PoetryItem poetryItem = new PoetryItem(title,source,AfterRe,serial);
             //TODO 使用串号需要新建对象,暂时没有想到使用对象同时又便于复用Fragment的方法
             //TODO 可以使用新的Fragment
             listPoetry.add(poetryItem);

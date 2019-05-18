@@ -2,11 +2,12 @@ package com.lishi.demo.poetrydictionarydemo.Presenter;
 
 import android.os.Handler;
 
+import com.lishi.demo.poetrydictionarydemo.MainActivity;
 import com.lishi.demo.poetrydictionarydemo.Model.Crawler;
 import com.lishi.demo.poetrydictionarydemo.Model.OnLoadListener;
 import com.lishi.demo.poetrydictionarydemo.View.DetailedPoetryView;
+import com.lishi.demo.poetrydictionarydemo.item.PoetryItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -14,13 +15,15 @@ import java.util.List;
  */
 public class DetailedPoetryPresenterImpl implements DetailedPoetryPresenter {
     List<DetailedPoetryView> listAllFragmentView;
+    MainActivity mainActivity;
     Crawler DetailCrawler;
     private Handler mHandler = new Handler();
 
 
-    public DetailedPoetryPresenterImpl(List<DetailedPoetryView> listAllFragmentView,Crawler DetailCrawler){
+    public DetailedPoetryPresenterImpl(MainActivity mainActivity,List<DetailedPoetryView> listAllFragmentView, Crawler DetailCrawler){
         this.listAllFragmentView = listAllFragmentView;
         this.DetailCrawler = DetailCrawler;
+        this.mainActivity = mainActivity;
     }
 
     @Override
@@ -44,7 +47,11 @@ public class DetailedPoetryPresenterImpl implements DetailedPoetryPresenter {
              */
             @Override
             public void loadSuccess(List listData) {
-
+                //更新main title
+                mHandler.post(()->{
+                    PoetryItem poetryItem = (PoetryItem) listData.get(0);
+                    mainActivity.toMainActivity(poetryItem.title);
+                });
 
                 for(int i = 0;i < listAllFragmentView.size();i++){
                     switch (i){

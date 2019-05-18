@@ -8,11 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
 import com.lishi.demo.poetrydictionarydemo.Adapter.RecyclerViewPoetryPagerAdapter;
 import com.lishi.demo.poetrydictionarydemo.R;
 import com.lishi.demo.poetrydictionarydemo.View.DetailedPoetryView;
+import com.lishi.demo.poetrydictionarydemo.item.PoetryItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,8 @@ public class RecyclerViewPoetryFragment extends Fragment implements DetailedPoet
     public static Fragment newInstance(){return  new RecyclerViewPoetryFragment();}
     final List<Object> items = new ArrayList<>();
     private RecyclerViewPoetryPagerAdapter mViewPagerAdapter;
+
+    private TextView logo;
 
     RecyclerView mRecyclerView;
 
@@ -43,7 +47,7 @@ public class RecyclerViewPoetryFragment extends Fragment implements DetailedPoet
             items.add(new Object());
         }
 
-        mViewPagerAdapter = new RecyclerViewPoetryPagerAdapter(items);
+        mViewPagerAdapter = new RecyclerViewPoetryPagerAdapter(items,ITEMS);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
